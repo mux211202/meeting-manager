@@ -5,7 +5,7 @@ import { HttpLink, split } from '@apollo/client';
 import { WebSocketLink } from "@apollo/link-ws";
 
 //TODO: replace with env file
-const endpoint = "https://blue-surf-1230055.us-east-1.aws.cloud.dgraph.io/graphql";
+const endpoint = "blue-surf-1230055.us-east-1.aws.cloud.dgraph.io/graphql";
 
 const wsLink = new WebSocketLink({
     uri: `wss://${endpoint}`,

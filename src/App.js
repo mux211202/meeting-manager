@@ -1,11 +1,12 @@
 import React from 'react';
 import { ApolloProvider } from '@apollo/client'
 import apolloClient from './ApolloSetup';
+import {UserPage} from './UserPage';
 
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
-      <div>hello</div>
+      <div><UserPage/></div>
     </ApolloProvider>
   );
 }
