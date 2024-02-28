@@ -6,10 +6,30 @@ const getUser = (id) => gql`
       name
       id
       email
+      meetings{
+        start
+        link
+        id
+        host
+        end
+      }
     }
   }
 `;
 
+const createMeeting = gql`
+  mutation sendMessage($start: String!, $end: String!, $host: String!, $link: String!) {
+    addMeeting(input: [{ start: $start, end: $end, host: $host, link: $link }]) {
+      meeting {
+        end
+        host
+        id
+        link
+        start
+      }
+    }
+  }
+`
 
 
 const createUser = ({email, name}) => gql`
@@ -24,20 +44,23 @@ const createUser = ({email, name}) => gql`
   }
 `;
 
-const addMeetingToUser = ({end, start, host, id, link}, user) => gql`
-  mutation UpdateUser {
-    updateUser(input: {filter: {id: "${user}"}, set: {meetings: {end: "${end}", host: "${host}", id: "${id}", link: "${link}", start: "${start}"}}}) {
-      user {
-        meetings {
-          start
-          link
-          id
-          host
-          end
-        }
+// TODO: refactor ids
+const addMeetingToUser = gql`
+mutation MyMutation($end: String, $link: String, $start: String, $id: ID! $host: String, $userId: [ID!]) {
+  updateUser(input: {set: {meetings: {end: $end, host: $host, id: $id, link: $link, start: $start}}, filter: {id: $userId}}) {
+    user {
+      email
+      id
+      meetings {
+        start
+        link
+        id
+        host
+        end
       }
     }
   }
-`
+}
+`;
 
-export { addMeetingToUser, createUser, getUser };
+export { addMeetingToUser, createUser, getUser, createMeeting };

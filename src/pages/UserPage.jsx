@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { useMutation, useSubscription } from "@apollo/client";
-import { getUser, createUser, addMeetingToUser } from "./Query"
-import "./index.css";
+import { useSubscription } from "@apollo/client";
+import { getUser } from "../Query";
+import CreateMeeting from "../components/CreateMeeting/CreateMeeting";
+import Meetings from "../components/Meetings/Meetings";
 
 export const UserPage = () => {
-    const [name, setName] = useState('');
-    const [text, setText] = useState('');
 
-    // const [sendMessage, { error: mutationError }] = useMutation(addMeetingToUser);
     const { data, error: subscriptionError } = useSubscription(getUser("0xfffd8d728febd7b1"));
     if (!data || !data.queryUser) return (<h1>Connecting...</h1>);
     if (subscriptionError) return (<h1>Error...</h1>);
@@ -18,6 +15,11 @@ export const UserPage = () => {
     return (
         <>
             <div>{userData.email}</div>
+            <CreateMeeting/>
+            <div>
+                <h2>Meetings:</h2>
+                <Meetings meetings={userData.meetings}/>
+            </div>
         </>
     );
 }
