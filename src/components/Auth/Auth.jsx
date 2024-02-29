@@ -13,21 +13,6 @@ import { Tab, Tabs } from '@mui/material';
 import { LOGIN, SIGNUP } from '../../configs/authConfig.js';
 import AuthForm from './AuthForm.jsx';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 
@@ -71,7 +56,6 @@ export default function SignIn() {
             </TabPanel>
         </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
