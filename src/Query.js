@@ -1,12 +1,12 @@
 import { gql } from "@apollo/client";
 
-const getUser = (id) => gql`
+const getUser = (email) => gql`
   subscription GetUser {
-    queryUser(filter: {id: "${id}"}) {
-      name
-      id
+    queryUser(filter: {email: {eq: "${email}"}}) {
       email
-      meetings{
+      id
+      name
+      meetings {
         start
         link
         id

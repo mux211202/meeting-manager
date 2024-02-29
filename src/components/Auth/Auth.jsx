@@ -1,0 +1,78 @@
+import React,  { useEffect, useState } from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+
+import Link from '@mui/material/Link';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from "../../configs/firebaseConfig.js";
+import TabPanel from '../TabPanel/TabPanel.jsx';
+import { Tab, Tabs } from '@mui/material';
+import { LOGIN, SIGNUP } from '../../configs/authConfig.js';
+import AuthForm from './AuthForm.jsx';
+
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+// TODO remove, this demo shouldn't need to reset the theme.
+
+const defaultTheme = createTheme();
+
+
+
+export default function SignIn() {
+    const [tabValue, setTabValue] = useState(LOGIN);
+
+    const handleChange = (event, newValue) => {
+        console.log(newValue);
+        setTabValue(newValue);
+    };
+
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            { tabValue === SIGNUP && "SIGN UP"}
+            { tabValue === LOGIN && "LOG IN"}
+          </Typography>
+          <Box sx={{ width: '100%' }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example">
+                    <Tab label="Log in" value={LOGIN}/>
+                    <Tab label="Sign up" value={SIGNUP}/>
+                </Tabs>
+            </Box>
+            <TabPanel value={tabValue} index={LOGIN}>
+                <AuthForm state={LOGIN}/>
+            </TabPanel>
+            <TabPanel value={tabValue} index={SIGNUP}>
+                <AuthForm state={SIGNUP}/>
+            </TabPanel>
+        </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
+  );
+}
