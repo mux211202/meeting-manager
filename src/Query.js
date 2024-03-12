@@ -5,7 +5,6 @@ const getUser = (email) => gql`
     queryUser(filter: {email: {eq: "${email}"}}) {
       email
       id
-      name
       meetings {
         start
         link
@@ -18,7 +17,7 @@ const getUser = (email) => gql`
 `;
 
 const createMeeting = gql`
-  mutation sendMessage($start: String!, $end: String!, $host: String!, $link: String!) {
+  mutation addMeeting($start: String!, $end: String!, $host: String!, $link: String!) {
     addMeeting(input: [{ start: $start, end: $end, host: $host, link: $link }]) {
       meeting {
         end
@@ -29,25 +28,22 @@ const createMeeting = gql`
       }
     }
   }
-`
+`;
 
-
-const createUser = ({email, name}) => gql`
-  mutation AddUser{
-    addUser(input: {email: "${email}", name: "${name}"}) {
+const createUser = gql`
+  mutation addUser($email: String!) {
+    addUser(input: {email: $email}) {
       user {
         email
         id
-        name
       }
     }
   }
 `;
 
-// TODO: refactor ids
 const addMeetingToUser = gql`
-mutation MyMutation($end: String, $link: String, $start: String, $id: ID! $host: String, $userId: [ID!]) {
-  updateUser(input: {set: {meetings: {end: $end, host: $host, id: $id, link: $link, start: $start}}, filter: {id: $userId}}) {
+mutation MyMutation($end: String, $link: String, $start: String, $id: ID! $host: String, $userEmail: String!) {
+  updateUser(input: {set: {meetings: {end: $end, host: $host, id: $id, link: $link, start: $start}}, filter: {email: {eq: $userEmail } }}) {
     user {
       email
       id

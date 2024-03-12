@@ -2,7 +2,7 @@ function Meetings({ meetings }) {
     return (
         <div className="Meeting">
             {
-                meetings?.length && meetings.map( ({id, start, end, link, host}) => {
+                !!meetings?.length && meetings.map( ({id, start, end, link, host}) => {
                     if(id && start && end && link && host) {
                         return (
                             <div key={id}>

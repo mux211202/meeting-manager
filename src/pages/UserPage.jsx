@@ -6,6 +6,8 @@ import Meetings from "../components/Meetings/Meetings";
 export const UserPage = ({user}) => {
 
     const { data, error: subscriptionError } = useSubscription(getUser(user.email));
+    console.log(user.email);
+    console.log(data);
     if (!data || !data.queryUser) return (<h1>Connecting...</h1>);
     if (subscriptionError) return (<h1>Error...</h1>);
 
@@ -18,11 +20,11 @@ export const UserPage = ({user}) => {
                 userData && userData.email && userData.meetings ? (
                     <>
                         <div>{userData.email}</div>
-                        <CreateMeeting/>
-                        <div>
+                        <CreateMeeting email={userData.email}/>
+                        {!!userData.meetings.length ? <div>
                             <h2>Meetings:</h2>
                             <Meetings meetings={userData.meetings}/>
-                        </div>
+                        </div> : <h2>No meetings planned</h2>} 
                     </>
                 ) : <> No user data found ...</>
             }
