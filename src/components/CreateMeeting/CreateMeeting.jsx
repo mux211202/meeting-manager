@@ -6,22 +6,65 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { TextField } from "@mui/material";
-import { createMeeting, addMeetingToUser } from "../../Query";
+import {
+  createMeeting,
+  addMeetingToUser,
+  filterUserByEmail,
+} from "../../Query";
 import { useMutation } from "@apollo/client";
-import React, { useEffect } from "react";    
+import React, { useEffect, useState } from "react";
 import { convertToISOString } from "../../utils/convertToISOString";
+import Autocomplete from "@mui/material/Autocomplete";
+import client from "../../ApolloSetup";
+
+export function ComboBox() {
+  const [autocompleteValue, setAutocompleteValue] = useState("");
+  const [emailOptions, setEmailOptions] = useState([]);
+
+  useEffect(() => {
+    const getParticipants = async () => {
+      const query = filterUserByEmail(autocompleteValue);
+      const { data: queryUser } = await client.query({
+        query,
+      });
+
+      setEmailOptions(queryUser.queryUser.map (user => user.email));
+      return queryUser;
+    };
+
+    getParticipants();
+  }, [autocompleteValue, setAutocompleteValue]);
+
+  return (
+    <Autocomplete
+      disablePortal
+      id="combo-box-demo"
+      options={emailOptions}
+      value={autocompleteValue}
+      sx={{ width: 300 }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          onChange={(e) => setAutocompleteValue(e.target.value)}
+          label="Participants"
+        />
+      )}
+    />
+  );
+}
 
 function CreateMeeting({ email }) {
   const [open, setOpen] = React.useState(false);
   const [stateFormData, setFormData] = React.useState(null);
-  const [addMeeting, { data: createdMeetingData, error }] = useMutation(createMeeting);
+  const [addMeeting, { data: createdMeetingData, error }] =
+    useMutation(createMeeting);
   const [pinMeetingToUser] = useMutation(addMeetingToUser);
   const divStyles = {
     margin: "10px",
     display: "flex",
     alignItems: "center",
     gap: "10px",
-  }
+  };
 
   useEffect(() => {
     const meeting = createdMeetingData?.addMeeting?.meeting[0];
@@ -34,19 +77,16 @@ function CreateMeeting({ email }) {
       meeting.start &&
       meeting.end &&
       meeting.link &&
-      meeting.host &&     
       meeting.id
     ) {
-      const { id, start, end, link, host } =
-        createdMeetingData.addMeeting.meeting[0];
-      console.log("meeting");
+      const { id, start, end, link } = createdMeetingData.addMeeting.meeting[0];
       pinMeetingToUser({
         variables: {
           userEmail: email,
           id,
           start,
           end,
-          host,
+          host: email,
           link,
         },
       });
@@ -133,11 +173,14 @@ function CreateMeeting({ email }) {
             margin="dense"
             id="host"
             name="host"
-            label="Who is host?"
+            label="Host"
             type="text"
             fullWidth
             variant="standard"
+            disabled
+            value={email}
           />
+          <ComboBox />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

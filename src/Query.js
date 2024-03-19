@@ -59,4 +59,13 @@ mutation MyMutation($end: DateTime, $link: String, $start: DateTime, $id: ID! $h
 }
 `;
 
-export { addMeetingToUser, createUser, getUser, createMeeting };
+const filterUserByEmail = (email) => gql`
+query MyQuery {
+  queryUser(filter: {email: {regexp: "/.*${email}.*/"}}, order: {asc: email}) {
+    email
+    id
+  }
+}
+`;
+
+export { addMeetingToUser, createUser, filterUserByEmail, getUser, createMeeting };
