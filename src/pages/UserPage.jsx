@@ -1,7 +1,7 @@
 import { useSubscription } from "@apollo/client";
 import { getUser } from "../Query";
 import CreateMeeting from "../components/CreateMeeting/CreateMeeting";
-import Meetings from "../components/Meetings/Meetings";
+import Calendar from "../components/Calendar/Calendar";
 
 export const UserPage = ({user}) => {
 
@@ -22,8 +22,8 @@ export const UserPage = ({user}) => {
                         <div>{userData.email}</div>
                         <CreateMeeting email={userData.email}/>
                         {!!userData.meetings.length ? <div>
-                            <h2>Meetings:</h2>
-                            <Meetings meetings={userData.meetings}/>
+                            <h2>Your calendar</h2>
+                            <Calendar meetings={userData.meetings}/>
                         </div> : <h2>No meetings planned</h2>} 
                     </>
                 ) : <> No user data found ...</>

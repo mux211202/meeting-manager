@@ -1,0 +1,19 @@
+div.MuiDateCalendar-root button.MuiButtonBase-root, div.MuiPickersDay-root, span.MuiDayCalendar-weekDayLabel {
+    width: 100px;
+    height: 50px;
+}
+
+div.MuiPickersSlideTransition-root {
+    min-height: 400px;
+}
+
+div.MuiDateCalendar-root {
+    margin-bottom: 40px;
+    max-height: 450px;
+    height: 450px;
+}
+
+div.MuiDateCalendar-root.hide-today button.MuiButtonBase-root.Mui-selected {
+    background-color: white;
+    color: black;
+}

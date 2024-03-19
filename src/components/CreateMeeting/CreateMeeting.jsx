@@ -14,31 +14,32 @@ import { convertToISOString } from "../../utils/convertToISOString";
 function CreateMeeting({ email }) {
   const [open, setOpen] = React.useState(false);
   const [stateFormData, setFormData] = React.useState(null);
-  const [addMeeting, { data: createdMeetingData }] = useMutation(createMeeting);
+  const [addMeeting, { data: createdMeetingData, error }] = useMutation(createMeeting);
   const [pinMeetingToUser] = useMutation(addMeetingToUser);
-
-  useEffect(() => {
-    if (
-      stateFormData &&
-      stateFormData.start &&
-      stateFormData.end &&
-      stateFormData.link
-    ) {
-      addMeeting({ variables: { ...stateFormData } });
-    }
-  }, [stateFormData, addMeeting]);
+  const divStyles = {
+    margin: "10px",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  }
 
   useEffect(() => {
     const meeting = createdMeetingData?.addMeeting?.meeting[0];
+    console.log("meeting", createdMeetingData?.addMeeting?.meeting[0]);
+    console.log("meeting", stateFormData);
 
     if (
       email &&
       meeting &&
-      stateFormData &&
-      Object.keys(stateFormData).every((k) => stateFormData[k] === meeting[k])
+      meeting.start &&
+      meeting.end &&
+      meeting.link &&
+      meeting.host &&     
+      meeting.id
     ) {
       const { id, start, end, link, host } =
         createdMeetingData.addMeeting.meeting[0];
+      console.log("meeting");
       pinMeetingToUser({
         variables: {
           userEmail: email,
@@ -52,7 +53,7 @@ function CreateMeeting({ email }) {
       setFormData(null);
       handleClose();
     }
-  }, [createdMeetingData, pinMeetingToUser, stateFormData, email]);
+  }, [createdMeetingData, pinMeetingToUser, email, stateFormData]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -69,20 +70,27 @@ function CreateMeeting({ email }) {
     const formJson = Object.fromEntries(formData.entries());
     const updatedFormData = {
       ...formJson,
-      start: convertToISOString(formJson.startDate, formJson.startTime),
-      end: convertToISOString(formJson.startDate, formJson.startTime),
+      start: convertToISOString(formJson.date, formJson.startTime),
+      end: convertToISOString(formJson.date, formJson.endTime),
     };
 
     delete updatedFormData.startTime;
-    delete updatedFormData.startDate;
     delete updatedFormData.endTime;
-    delete updatedFormData.endDate;
+    delete updatedFormData.date;
 
-    setFormData(updatedFormData);
+    if (
+      updatedFormData &&
+      updatedFormData.start &&
+      updatedFormData.end &&
+      updatedFormData.link
+    ) {
+      addMeeting({ variables: { ...updatedFormData } });
+    }
   };
 
   return (
     <React.Fragment>
+      {error && <p>Error: {error.message}</p>}
       <Button variant="outlined" onClick={handleClickOpen}>
         Open form dialog
       </Button>
@@ -96,14 +104,16 @@ function CreateMeeting({ email }) {
       >
         <DialogTitle>Create Meeting</DialogTitle>
         <DialogContent>
-          <div>
-            Start (UTC timezone):
-            <DatePicker required name="startDate" />
+          <div style={divStyles}>
+            <span>Date:</span>
+            <DatePicker required name="date" />
+          </div>
+          <div style={divStyles}>
+            <span>Start time (UTC timezone):</span>
             <TimePicker required name="startTime" />
           </div>
-          <div>
-            End (UTC timezone):
-            <DatePicker required name="endDate" />
+          <div style={divStyles}>
+            <span>End time(UTC timezone):</span>
             <TimePicker required name="endTime" />
           </div>
           <TextField

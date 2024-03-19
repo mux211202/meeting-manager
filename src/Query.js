@@ -17,7 +17,7 @@ const getUser = (email) => gql`
 `;
 
 const createMeeting = gql`
-  mutation addMeeting($start: String!, $end: String!, $host: String!, $link: String!) {
+  mutation addMeeting($start: DateTime!, $end: DateTime!, $host: String!, $link: String!) {
     addMeeting(input: [{ start: $start, end: $end, host: $host, link: $link }]) {
       meeting {
         end
@@ -42,7 +42,7 @@ const createUser = gql`
 `;
 
 const addMeetingToUser = gql`
-mutation MyMutation($end: String, $link: String, $start: String, $id: ID! $host: String, $userEmail: String!) {
+mutation MyMutation($end: DateTime, $link: String, $start: DateTime, $id: ID! $host: String, $userEmail: String!) {
   updateUser(input: {set: {meetings: {end: $end, host: $host, id: $id, link: $link, start: $start}}, filter: {email: {eq: $userEmail } }}) {
     user {
       email
