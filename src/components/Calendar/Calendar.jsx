@@ -60,7 +60,6 @@ export default function Calendar({meetings}) {
       const days = meetings.map((meeting) => {
         const start = dayjs(meeting.start);
         if (currentMonth === start.month()+1 && currentYear === start.year()) {
-            console.log(start.month());
             return start.date();
         }
         return null;
@@ -83,8 +82,6 @@ export default function Calendar({meetings}) {
       setDayMeetings(dayMeetings);
     }
   };
-
-  console.log(meetings)
 
   return (
       <React.Fragment>

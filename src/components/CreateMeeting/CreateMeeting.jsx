@@ -9,53 +9,14 @@ import { TextField } from "@mui/material";
 import {
   createMeeting,
   addMeetingToUser,
-  filterUserByEmail,
 } from "../../Query";
 import { useMutation } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import AutocompleteEmails from "../AutocompleteEmails/AutocompleteEmails";
 import { convertToISOString } from "../../utils/convertToISOString";
-import Autocomplete from "@mui/material/Autocomplete";
-import client from "../../ApolloSetup";
-
-export function ComboBox() {
-  const [autocompleteValue, setAutocompleteValue] = useState("");
-  const [emailOptions, setEmailOptions] = useState([]);
-
-  useEffect(() => {
-    const getParticipants = async () => {
-      const query = filterUserByEmail(autocompleteValue);
-      const { data: queryUser } = await client.query({
-        query,
-      });
-
-      setEmailOptions(queryUser.queryUser.map (user => user.email));
-      return queryUser;
-    };
-
-    getParticipants();
-  }, [autocompleteValue, setAutocompleteValue]);
-
-  return (
-    <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={emailOptions}
-      value={autocompleteValue}
-      sx={{ width: 300 }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          onChange={(e) => setAutocompleteValue(e.target.value)}
-          label="Participants"
-        />
-      )}
-    />
-  );
-}
 
 function CreateMeeting({ email }) {
   const [open, setOpen] = React.useState(false);
-  const [stateFormData, setFormData] = React.useState(null);
   const [addMeeting, { data: createdMeetingData, error }] =
     useMutation(createMeeting);
   const [pinMeetingToUser] = useMutation(addMeetingToUser);
@@ -65,37 +26,56 @@ function CreateMeeting({ email }) {
     alignItems: "center",
     gap: "10px",
   };
+   const [invitedUsers, setInvitedUsers] = useState(null);
 
   useEffect(() => {
     const meeting = createdMeetingData?.addMeeting?.meeting[0];
-    console.log("meeting", createdMeetingData?.addMeeting?.meeting[0]);
-    console.log("meeting", stateFormData);
 
-    if (
-      email &&
-      meeting &&
-      meeting.start &&
-      meeting.end &&
-      meeting.link &&
-      meeting.id
-    ) {
-      const { id, start, end, link } = createdMeetingData.addMeeting.meeting[0];
-      pinMeetingToUser({
-        variables: {
-          userEmail: email,
-          id,
-          start,
-          end,
-          host: email,
-          link,
-        },
-      });
-      setFormData(null);
-      handleClose();
+    function handleMutation() {
+      if (
+        email &&
+        meeting &&
+        meeting.start &&
+        meeting.end &&
+        meeting.link &&
+        meeting.id
+      ) {
+        const { id, start, end, link } = createdMeetingData.addMeeting.meeting[0];
+        pinMeetingToUser({
+          variables: {
+            userEmail: email,
+            id,
+            start,
+            end,
+            host: email,
+            link,
+          },
+        }).then( async () => {
+          if(invitedUsers?.length) {
+            for(let i = 0; i < invitedUsers.length; i++) {
+              const invitedUser = invitedUsers[i];
+              await pinMeetingToUser({
+                variables: {
+                  userEmail: invitedUser,
+                  id,
+                  start,
+                  end,
+                  host: email,
+                  link,
+                },
+              });
+            }
+          }
+        }).then(() => {
+          handleClose();
+        });
+      }
     }
-  }, [createdMeetingData, pinMeetingToUser, email, stateFormData]);
+    handleMutation();
+  }, [createdMeetingData, pinMeetingToUser, email, invitedUsers]);
 
   const handleClickOpen = () => {
+    setInvitedUsers(null);
     setOpen(true);
   };
 
@@ -112,6 +92,7 @@ function CreateMeeting({ email }) {
       ...formJson,
       start: convertToISOString(formJson.date, formJson.startTime),
       end: convertToISOString(formJson.date, formJson.endTime),
+      host: email,
     };
 
     delete updatedFormData.startTime;
@@ -180,7 +161,7 @@ function CreateMeeting({ email }) {
             disabled
             value={email}
           />
-          <ComboBox />
+          <AutocompleteEmails hostMail={email} setValue={setInvitedUsers}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

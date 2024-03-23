@@ -21,7 +21,6 @@ export default function SignIn() {
     const [tabValue, setTabValue] = useState(LOGIN);
 
     const handleChange = (event, newValue) => {
-        console.log(newValue);
         setTabValue(newValue);
     };
 

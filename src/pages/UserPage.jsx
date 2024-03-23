@@ -6,13 +6,10 @@ import Calendar from "../components/Calendar/Calendar";
 export const UserPage = ({user}) => {
 
     const { data, error: subscriptionError } = useSubscription(getUser(user.email));
-    console.log(user.email);
-    console.log(data);
     if (!data || !data.queryUser) return (<h1>Connecting...</h1>);
     if (subscriptionError) return (<h1>Error...</h1>);
 
     const userData = data.queryUser[0];
-    console.log(userData);
     
     return (
         <div>
