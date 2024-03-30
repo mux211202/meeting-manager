@@ -1,3 +1,5 @@
+import { convertFromISOString } from "../../utils/convertToISOString";
+
 function Meetings({ meetings }) {
     return (
         <div className="Meeting">
@@ -6,8 +8,8 @@ function Meetings({ meetings }) {
                     if(id && start && end && link && host) {
                         return (
                             <div key={id}>
-                                <div><strong>Start:</strong> {start}</div>
-                                <div><strong>End:</strong> {end}</div>
+                                <div><strong>Start:</strong> {convertFromISOString(start)}</div>
+                                <div><strong>End:</strong> {convertFromISOString(end)}</div>
                                 <div><strong>Host:</strong> {host}</div>
                                 <div><strong>Link:</strong> {link}</div>
                                 <br/>

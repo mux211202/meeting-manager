@@ -14,3 +14,32 @@ export function convertToISOString(dateString, timeString) {
   
     return isoString;
 };
+
+export function convertFromISOString(isoString) {
+    // Create a Date object from the ISO string
+    const date = new Date(isoString);
+  
+    // Extract date components
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+  
+    // Extract time components
+    let hours = String(date.getUTCHours());
+    let minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  
+    // Adjust for 12-hour time format
+    let period = 'AM';
+    if (hours > 12) {
+        hours -= 12;
+        period = 'PM';
+    }
+  
+    // Format the time string
+    const timeString = `${hours}:${minutes} ${period}`;
+  
+    // Construct the final date string
+    const dateString = `${month}/${day}/${year}`;
+  
+    return `${dateString} ${timeString}`;
+};

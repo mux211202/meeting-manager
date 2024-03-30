@@ -161,7 +161,7 @@ function CreateMeeting({ email }) {
             disabled
             value={email}
           />
-          <AutocompleteEmails hostMail={email} setValue={setInvitedUsers}/>
+          <AutocompleteEmails invitedUsers={invitedUsers} hostMail={email} setValue={setInvitedUsers}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

@@ -160,7 +160,7 @@ const Listbox = styled("ul")(
 `
 );
 
-export default function AutocompleteEmails({setValue, hostMail}) {
+export default function AutocompleteEmails({setValue, invitedUsers, hostMail}) {
   const [autocompleteValue, setAutocompleteValue] = useState("");
   const [emailOptions, setEmailOptions] = useState([]);
 
@@ -187,6 +187,11 @@ export default function AutocompleteEmails({setValue, hostMail}) {
   }, [setValue, value]);
 
   useEffect(() => {
+    console.log(invitedUsers)
+    setAutocompleteValue("")
+  }, [invitedUsers])
+
+  useEffect(() => {
     handleValueChange();
   }, [groupedOptions, handleValueChange]);
 
@@ -202,7 +207,7 @@ export default function AutocompleteEmails({setValue, hostMail}) {
       setEmailOptions(filteredUsers.map((user) => user.email));
       return queryUser;
     };
-
+    console.log(autocompleteValue);
     getParticipants();
   }, [autocompleteValue, hostMail, setAutocompleteValue]);
 

@@ -57,15 +57,14 @@ export default function Calendar({meetings}) {
 
   React.useEffect(() => {
     if (meetings) {
-      const days = meetings.map((meeting) => {
+      const days = meetings.filter((meeting) => {
         const start = dayjs(meeting.start);
-        if (currentMonth === start.month()+1 && currentYear === start.year()) {
-            return start.date();
-        }
-        return null;
+        return (currentMonth === start.month()+1 && currentYear === start.year())
       });
-
-      setHighlightedDays(days);
+      console.log(days.map((day) => dayjs(day.start)));
+      setHighlightedDays(
+        days.map((day) => dayjs(day.start).date())
+        );
     }
   }, [currentMonth, currentYear, meetings]);
 
