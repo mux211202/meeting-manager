@@ -112,9 +112,12 @@ function CreateMeeting({ email }) {
   return (
     <React.Fragment>
       {error && <p>Error: {error.message}</p>}
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
+      <Button variant="outlined"  disabled={!navigator.onLine} onClick={handleClickOpen}>
+        Create Meeting
       </Button>
+      {
+        !navigator.onLine && <div> You are offline. The application is in read-only mode! </div>
+      }
       <Dialog
         open={open}
         onClose={handleClose}

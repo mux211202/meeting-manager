@@ -7,6 +7,7 @@ import  { USER_MEETINGS } from "../configs/UserPageConfig"
 export const UserPage = ({user}) => {
 
     const { data, error: subscriptionError } = useSubscription(getUser(user.email));
+    
     if ((!data || !data.queryUser) && !localStorage.getItem(USER_MEETINGS)) {
         return (<h1>Connecting...</h1>);
     }
