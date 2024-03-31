@@ -1,21 +1,16 @@
-import React,  { useEffect, useState } from 'react';
+import React,  {useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "../../configs/firebaseConfig.js";
 import TabPanel from '../TabPanel/TabPanel.jsx';
 import { Tab, Tabs } from '@mui/material';
 import { LOGIN, SIGNUP } from '../../configs/authConfig.js';
 import AuthForm from './AuthForm.jsx';
 
 const defaultTheme = createTheme();
-
-
 
 export default function SignIn() {
     const [tabValue, setTabValue] = useState(LOGIN);

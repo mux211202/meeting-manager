@@ -12,7 +12,7 @@ import { createUser } from "../../Query";
 import { useMutation } from "@apollo/client";
 
 function AuthForm({ state }) {
-  const [createDgraphUser, { error: error }] = useMutation(createUser);
+  const [createDgraphUser] = useMutation(createUser);
 
   const handleSubmit = (e) => { 
     e.preventDefault();

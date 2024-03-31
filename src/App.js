@@ -16,6 +16,7 @@ function App() {
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user);
         setAuthUser(user);
       } else {
         setAuthUser(null);
@@ -32,8 +33,8 @@ function App() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <AuthDetails authUser={authUser}/>
         <Container maxWidth="lg">
-          { authUser?.email && <UserPage user={authUser}/> }
-          { !authUser?.email && <Auth/> }
+          { authUser?.email ? <UserPage user={authUser}/> : null }
+          { !authUser?.email ? <Auth/> : null }
         </Container>
       </LocalizationProvider>
     </ApolloProvider>

@@ -2,14 +2,22 @@ import { useSubscription } from "@apollo/client";
 import { getUser } from "../Query";
 import CreateMeeting from "../components/CreateMeeting/CreateMeeting";
 import Calendar from "../components/Calendar/Calendar";
+import  { USER_MEETINGS } from "../configs/UserPageConfig"
 
 export const UserPage = ({user}) => {
 
     const { data, error: subscriptionError } = useSubscription(getUser(user.email));
-    if (!data || !data.queryUser) return (<h1>Connecting...</h1>);
+    if ((!data || !data.queryUser) && !localStorage.getItem(USER_MEETINGS)) {
+        return (<h1>Connecting...</h1>);
+    }
+    
     if (subscriptionError) return (<h1>Error...</h1>);
 
-    const userData = data.queryUser[0];
+    if (data?.queryUser[0]) {
+        localStorage.setItem(USER_MEETINGS, JSON.stringify(data.queryUser[0]));
+    }
+
+    const userData = data?.queryUser[0] || JSON.parse(localStorage.getItem(USER_MEETINGS)) || null;
     
     return (
         <div>
