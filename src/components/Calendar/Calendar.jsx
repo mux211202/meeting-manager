@@ -61,7 +61,6 @@ export default function Calendar({meetings}) {
         const start = dayjs(meeting.start);
         return (currentMonth === start.month()+1 && currentYear === start.year())
       });
-      console.log(days.map((day) => dayjs(day.start)));
       setHighlightedDays(
         days.map((day) => dayjs(day.start).date())
         );
