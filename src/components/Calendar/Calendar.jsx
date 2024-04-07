@@ -94,11 +94,9 @@ export default function Calendar({meetings}) {
             slots={{
             day: MeetingDay,
             }}
-            fullWidth
             slotProps={{
             day: {
                 highlightedDays,
-                textField: { fullWidth: true }
             },
             }}
         />

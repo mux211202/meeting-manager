@@ -9,7 +9,7 @@ function Meetings({ meetings, handleClose }) {
 
                     if(id && start && end && link && host) {
                         return (
-                            <Meeting handleClose={handleClose} {...meeting}/>
+                            <Meeting key={id} handleClose={handleClose} {...meeting}/>
                         );
                     }
                     return null;
