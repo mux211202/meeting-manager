@@ -6,13 +6,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import React from "react"; 
 import Meetings from "../Meetings/Meetings";
 
-function MeetingDialog({ meetings, open, handleClose, day }) {
+function MeetingDialog({ meetings, open, handleClose, day, userMail }) {
   return (
     <React.Fragment>
       {meetings ? <Dialog open={open}>
         <DialogTitle>{day ? `Your meetings on ${day}` : "Your meetings"}</DialogTitle>
         <DialogContent>
-            <Meetings meetings={meetings[Object.keys(meetings)[0]]}/>
+            <Meetings handleClose={handleClose} userMail={userMail} meetings={meetings[Object.keys(meetings)[0]]}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

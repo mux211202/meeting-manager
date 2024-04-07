@@ -1,19 +1,15 @@
-import { convertFromISOString } from "../../utils/convertToISOString";
-
-function Meetings({ meetings }) {
+import { Meeting } from "../Meeting/Meeting";
+function Meetings({ meetings, handleClose }) {
     return (
         <div className="Meeting">
             {
-                !!meetings?.length && meetings.map( ({id, start, end, link, host}) => {
+                !!meetings?.length && meetings.map( (meeting) => {
+                    const {id, start, end, link, host} = meeting;
+
+
                     if(id && start && end && link && host) {
                         return (
-                            <div key={id}>
-                                <div><strong>Start:</strong> {convertFromISOString(start)}</div>
-                                <div><strong>End:</strong> {convertFromISOString(end)}</div>
-                                <div><strong>Host:</strong> {host}</div>
-                                <div><strong>Link:</strong> {link}</div>
-                                <br/>
-                            </div>
+                            <Meeting handleClose={handleClose} {...meeting}/>
                         );
                     }
                     return null;

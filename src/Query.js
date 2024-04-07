@@ -42,7 +42,7 @@ const createUser = gql`
 `;
 
 const addMeetingToUser = gql`
-mutation MyMutation($end: DateTime, $link: String, $start: DateTime, $id: ID! $host: String, $userEmail: String!) {
+mutation addMeetingToUser($end: DateTime, $link: String, $start: DateTime, $id: ID! $host: String, $userEmail: String!) {
   updateUser(input: {set: {meetings: {end: $end, host: $host, id: $id, link: $link, start: $start}}, filter: {email: {eq: $userEmail } }}) {
     user {
       email
@@ -60,7 +60,7 @@ mutation MyMutation($end: DateTime, $link: String, $start: DateTime, $id: ID! $h
 `;
 
 const filterUserByEmail = (email) => gql`
-query MyQuery {
+query filterUserByEmail {
   queryUser(filter: {email: {regexp: "/.*${email}.*/"}}, order: {asc: email}) {
     email
     id
@@ -68,4 +68,41 @@ query MyQuery {
 }
 `;
 
-export { addMeetingToUser, createUser, filterUserByEmail, getUser, createMeeting };
+const updateMeeting = gql`
+mutation updateMeeting($id: [ID!], $end: DateTime, $link: String, $start: DateTime) {
+  updateMeeting(input: {filter: {id: $id}, set: {end: $end, link: $link, start: $start}}) {
+    meeting {
+      end
+      host
+      id
+      link
+      start
+    }
+  }
+}`;
+
+const getMeetingUsers = gql `
+subscription getMeetingUsers($id: [ID!]) {
+  queryUser {
+    id
+    email
+    meetings(filter: {id: $id}) {
+      id
+    }
+  }
+}
+`
+
+const removeMeetingFromUser = gql `
+mutation removeMeetingFromUser($email: String, $meetingId: ID) {
+    updateUser(input: {filter: {email: {eq: $email}}, remove: {meetings: {id: $meetingId}}}) {
+        user {
+            email
+        }
+    }
+}
+`
+
+
+
+export { addMeetingToUser, createUser, filterUserByEmail, getUser, createMeeting, getMeetingUsers, updateMeeting, removeMeetingFromUser };

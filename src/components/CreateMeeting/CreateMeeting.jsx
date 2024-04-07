@@ -3,30 +3,23 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { TextField } from "@mui/material";
+
 import {
   createMeeting,
   addMeetingToUser,
 } from "../../Query";
 import { useMutation } from "@apollo/client";
-import React, { useCallback, useEffect, useState } from "react";
-import AutocompleteEmails from "../AutocompleteEmails/AutocompleteEmails";
+import React, { useEffect, useState } from "react";
 import { convertToISOString } from "../../utils/convertToISOString";
+import { MeetingForm } from "../MeetingForm/MeetingForm";
+import {pinMeetingToUsers} from "../../utils/userMeetings";
 
 function CreateMeeting({ email }) {
   const [open, setOpen] = React.useState(false);
   const [addMeeting, { data: createdMeetingData, error }] =
     useMutation(createMeeting);
   const [pinMeetingToUser] = useMutation(addMeetingToUser);
-  const divStyles = {
-    margin: "10px",
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-  };
-   const [invitedUsers, setInvitedUsers] = useState(null);
+  const [invitedUsers, setInvitedUsers] = useState([]);
 
   useEffect(() => {
     const meeting = createdMeetingData?.addMeeting?.meeting[0];
@@ -52,19 +45,7 @@ function CreateMeeting({ email }) {
           },
         }).then( async () => {
           if(invitedUsers?.length) {
-            for(let i = 0; i < invitedUsers.length; i++) {
-              const invitedUser = invitedUsers[i];
-              await pinMeetingToUser({
-                variables: {
-                  userEmail: invitedUser,
-                  id,
-                  start,
-                  end,
-                  host: email,
-                  link,
-                },
-              });
-            }
+            await pinMeetingToUsers(invitedUsers, meeting, pinMeetingToUser )
           }
         }).then(() => {
           handleClose();
@@ -128,43 +109,7 @@ function CreateMeeting({ email }) {
       >
         <DialogTitle>Create Meeting</DialogTitle>
         <DialogContent>
-          <div style={divStyles}>
-            <span>Date:</span>
-            <DatePicker required name="date" />
-          </div>
-          <div style={divStyles}>
-            <span>Start time (UTC timezone):</span>
-            <TimePicker required name="startTime" />
-          </div>
-          <div style={divStyles}>
-            <span>End time(UTC timezone):</span>
-            <TimePicker required name="endTime" />
-          </div>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="link"
-            name="link"
-            label="Provide a link"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="host"
-            name="host"
-            label="Host"
-            type="text"
-            fullWidth
-            variant="standard"
-            disabled
-            value={email}
-          />
-          <AutocompleteEmails invitedUsers={invitedUsers} hostMail={email} setValue={setInvitedUsers}/>
+          <MeetingForm email={email} invitedUsers={invitedUsers} setInvitedUsers={setInvitedUsers}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
