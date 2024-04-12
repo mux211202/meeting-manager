@@ -7,7 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import {
   createMeeting,
   addMeetingToUser,
-} from "../../utils/Query";
+} from "../../utils/query";
 import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { date } from "../../utils/date";

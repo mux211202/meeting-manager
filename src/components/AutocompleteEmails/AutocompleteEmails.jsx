@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { queryUsers } from "../../utils/Query";
+import { queryUsers } from "../../utils/query";
 import client from "../../configs/ApolloSetup";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';

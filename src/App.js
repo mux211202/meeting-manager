@@ -5,10 +5,10 @@ import {UserPage} from './pages/UserPage';
 import Container from '@mui/material/Container';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Auth from './components/Auth/Auth';
+import Auth from './pages/Auth/Auth';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './configs/firebaseConfig';
-import AuthDetails from './components/Auth/AuthDetails';
+import AuthDetails from './pages/Auth/AuthDetails';
 
 function App() {
   const [authUser, setAuthUser] = useState(null);

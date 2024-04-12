@@ -1,6 +1,6 @@
 import { convertFromISOString } from "../../utils/date";
 import {useMutation, useSubscription} from "@apollo/client";
-import { getMeetingUsers, addMeetingToUser, updateMeeting as updateMeetingMutation, removeMeetingFromUser as removeMeetingFromUserMutation } from "../../utils/Query";
+import { getMeetingUsers, addMeetingToUser, updateMeeting as updateMeetingMutation, removeMeetingFromUser as removeMeetingFromUserMutation } from "../../utils/query";
 import Loader from "../Loader/Loader";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
