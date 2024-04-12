@@ -59,9 +59,9 @@ mutation addMeetingToUser($end: DateTime, $link: String, $start: DateTime, $id: 
 }
 `;
 
-const filterUserByEmail = (email) => gql`
-query filterUserByEmail {
-  queryUser(filter: {email: {regexp: "/.*${email}.*/"}}, order: {asc: email}) {
+const queryUsers = () => gql`
+query queryUsers {
+  queryUser(order: {asc: email}) {
     email
     id
   }
@@ -105,4 +105,4 @@ mutation removeMeetingFromUser($email: String, $meetingId: ID) {
 
 
 
-export { addMeetingToUser, createUser, filterUserByEmail, getUser, createMeeting, getMeetingUsers, updateMeeting, removeMeetingFromUser };
+export { addMeetingToUser, createUser, queryUsers, getUser, createMeeting, getMeetingUsers, updateMeeting, removeMeetingFromUser };

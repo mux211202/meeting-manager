@@ -7,10 +7,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import {
   createMeeting,
   addMeetingToUser,
-} from "../../Query";
+} from "../../utils/Query";
 import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
-import { convertToISOString } from "../../utils/convertToISOString";
+import { date } from "../../utils/date";
 import { MeetingForm } from "../MeetingForm/MeetingForm";
 import {pinMeetingToUsers} from "../../utils/userMeetings";
 
@@ -71,8 +71,8 @@ function CreateMeeting({ email }) {
     const formJson = Object.fromEntries(formData.entries());
     const updatedFormData = {
       ...formJson,
-      start: convertToISOString(formJson.date, formJson.startTime),
-      end: convertToISOString(formJson.date, formJson.endTime),
+      start: date(formJson.date, formJson.startTime),
+      end: date(formJson.date, formJson.endTime),
       host: email,
     };
 

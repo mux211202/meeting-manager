@@ -3,7 +3,6 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// TODO: extract to the .env file
 const firebaseConfig = {
   apiKey: "AIzaSyA9az7MF639cJ6WmD6cnRN-8LcLzatXMzU",
   authDomain: "meeting-manager-d12b2.firebaseapp.com",

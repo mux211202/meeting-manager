@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../configs/firebaseConfig";
 import { LOGIN, SIGNUP } from "../../configs/authConfig";
-import { createUser } from "../../Query";
+import { createUser } from "../../utils/Query";
 import { useMutation } from "@apollo/client";
 
 function AuthForm({ state }) {

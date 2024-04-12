@@ -6,13 +6,11 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 import MeetingDialog from '../MeetingDialog/MeetingDialog';
 import './Calendar.css';
-import { convertToEuropeDateFormat } from '../../utils/convertToEuropeTimeFormat';
+import { convertToEuropeDateFormat } from '../../utils/date';
 
 function MeetingDay(props) {
   const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
-
-  const isSelected =
-    !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
+  const isSelected = !props.outsideCurrentMonth && highlightedDays.includes(day.date());
 
   return (
     <Badge
@@ -61,9 +59,7 @@ export default function Calendar({meetings}) {
         const start = dayjs(meeting.start);
         return (currentMonth === start.month()+1 && currentYear === start.year())
       });
-      setHighlightedDays(
-        days.map((day) => dayjs(day.start).date())
-        );
+      setHighlightedDays(days.map((day) => dayjs(day.start).date()) );
     }
   }, [currentMonth, currentYear, meetings]);
 

@@ -4,7 +4,6 @@ import { InMemoryCache } from '@apollo/client/cache';
 import { HttpLink, split } from '@apollo/client';
 import { WebSocketLink } from "@apollo/link-ws";
 
-//TODO: replace with env file
 const endpoint = "blue-surf-1230055.us-east-1.aws.cloud.dgraph.io/graphql";
 
 const wsLink = new WebSocketLink({
@@ -30,8 +29,8 @@ const link = split(
     wsLink,
     httpLink
 );
-
-export default new ApolloClient({
+const client = new ApolloClient({
     cache: new InMemoryCache(),
     link
 });
+export default client;

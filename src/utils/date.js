@@ -1,4 +1,4 @@
-export function convertToISOString(dateString, timeString) {
+export function date(dateString, timeString) {
     // Parse input date and time
     const [month, day, year] = dateString.split('/');
     const [hours, minutes, period] = timeString.match(/(\d+):(\d+) (AM|PM)/).slice(1);
@@ -43,3 +43,7 @@ export function convertFromISOString(isoString) {
   
     return `${dateString} ${timeString}`;
 };
+
+export const convertToEuropeDateFormat = (date) => {
+    return date.format("DD/MM/YYYY");
+}

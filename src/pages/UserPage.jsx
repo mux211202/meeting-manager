@@ -1,5 +1,5 @@
 import { useSubscription } from "@apollo/client";
-import { getUser } from "../Query";
+import { getUser } from "../utils/Query";
 import CreateMeeting from "../components/CreateMeeting/CreateMeeting";
 import Calendar from "../components/Calendar/Calendar";
 import  { USER_MEETINGS } from "../configs/UserPageConfig"

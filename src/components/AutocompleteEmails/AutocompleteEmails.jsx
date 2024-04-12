@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { filterUserByEmail } from "../../Query";
-import client from "../../ApolloSetup";
+import React, { useEffect } from "react";
+import { queryUsers } from "../../utils/Query";
+import client from "../../configs/ApolloSetup";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -9,12 +9,11 @@ export default function AutocompleteEmails({setValue, invitedUsers, hostMail, de
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [autocompleteValue, setAutocompleteValue] = useState("");
 
   useEffect(() => {
     const getParticipants = async () => {
       setLoading(true);
-      const query = filterUserByEmail(autocompleteValue);
+      const query = queryUsers();
       const { data: queryUser } = await client.query({ 
         query,
       });
@@ -25,7 +24,7 @@ export default function AutocompleteEmails({setValue, invitedUsers, hostMail, de
       return queryUser;
     };
     getParticipants();
-  }, [autocompleteValue, hostMail, setAutocompleteValue, invitedUsers, open]);
+  }, [hostMail, invitedUsers, open]);
 
   React.useEffect(() => {
     if (!open) {
@@ -59,7 +58,6 @@ export default function AutocompleteEmails({setValue, invitedUsers, hostMail, de
               label="Invite users"
               InputProps={{
                   ...params.InputProps,
-                  value: autocompleteValue,
                   endAdornment: (
                       <React.Fragment>
                           {loading ? <CircularProgress color="inherit" size={20} /> : null}

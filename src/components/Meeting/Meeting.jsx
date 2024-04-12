@@ -1,12 +1,12 @@
-import { convertFromISOString } from "../../utils/convertToISOString";
+import { convertFromISOString } from "../../utils/date";
 import {useMutation, useSubscription} from "@apollo/client";
-import { getMeetingUsers, addMeetingToUser, updateMeeting as updateMeetingMutation, removeMeetingFromUser as removeMeetingFromUserMutation } from "../../Query";
+import { getMeetingUsers, addMeetingToUser, updateMeeting as updateMeetingMutation, removeMeetingFromUser as removeMeetingFromUserMutation } from "../../utils/Query";
 import Loader from "../Loader/Loader";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { MeetingForm } from "../MeetingForm/MeetingForm";
 import dayjs from "dayjs";
-import { convertToISOString } from "../../utils/convertToISOString";
+import { date } from "../../utils/date";
 import utc from 'dayjs/plugin/utc';
 import {pinMeetingToUsers} from "../../utils/userMeetings";
 
@@ -52,8 +52,8 @@ export function Meeting({id, start, end, link, host, handleClose}) {
         const formJson = Object.fromEntries(formData.entries());
         const updatedFormData = {
             link: formJson.link || "",
-            start: convertToISOString(formJson.date, formJson.startTime),
-            end: convertToISOString(formJson.date, formJson.endTime),
+            start: date(formJson.date, formJson.startTime),
+            end: date(formJson.date, formJson.endTime),
             host: host,
             id: id
         };
