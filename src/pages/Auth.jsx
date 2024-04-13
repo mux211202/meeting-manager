@@ -5,10 +5,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import TabPanel from '../../components/TabPanel/TabPanel.jsx';
+import TabPanel from '../components/TabPanel/TabPanel.jsx';
 import { Tab, Tabs } from '@mui/material';
-import { LOGIN, SIGNUP } from '../../configs/authConfig.js';
-import AuthForm from './AuthForm.jsx';
+import { LOGIN, SIGNUP } from '../configs/authConfig.js';
+import AuthForm from '../components/AuthForm/AuthForm.jsx';
 
 const defaultTheme = createTheme();
 
