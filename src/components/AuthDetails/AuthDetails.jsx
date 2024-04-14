@@ -1,6 +1,6 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../../configs/firebaseConfig";
-import { USER_MEETINGS } from "../../configs/UserPageConfig";
+import { USER_MEETINGS } from "../../configs/userPageConfig";
 
 const AuthDetails = ({ authUser }) => {
   const userSignOut = () => {

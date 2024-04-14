@@ -2,7 +2,7 @@ import { useSubscription } from "@apollo/client";
 import { getUser } from "../utils/query";
 import CreateMeeting from "../components/CreateMeeting/CreateMeeting";
 import Calendar from "../components/Calendar/Calendar";
-import  { USER_MEETINGS } from "../configs/UserPageConfig"
+import  { USER_MEETINGS } from "../configs/userPageConfig"
 
 export const UserPage = ({user}) => {
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ApolloProvider } from '@apollo/client'
-import apolloClient from './configs/ApolloSetup';
+import apolloClient from './configs/apolloSetup';
 import {UserPage} from './pages/UserPage';
 import Container from '@mui/material/Container';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
