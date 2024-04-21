@@ -53,7 +53,7 @@ function CreateMeeting({ email }) {
       }
     }
     handleMutation();
-  }, [createdMeetingData, pinMeetingToUser, email, invitedUsers]);
+  }, [createdMeetingData, pinMeetingToUser, email]);
 
   const handleClickOpen = () => {
     setInvitedUsers(null);

@@ -19,7 +19,7 @@ export const UserPage = ({user}) => {
     }
 
     const userData = data?.queryUser[0] || JSON.parse(localStorage.getItem(USER_MEETINGS)) || null;
-    
+    console.log(userData.meetings.length)
     return (
         <div>
             {
