@@ -24,7 +24,7 @@ function CreateMeeting({ email }) {
   useEffect(() => {
     const meeting = createdMeetingData?.addMeeting?.meeting[0];
 
-    function handleMutation() {
+    async function handleMutation() {
       if (
         email &&
         meeting &&
@@ -33,23 +33,12 @@ function CreateMeeting({ email }) {
         meeting.link &&
         meeting.id
       ) {
-        const { id, start, end, link } = createdMeetingData.addMeeting.meeting[0];
-        pinMeetingToUser({
-          variables: {
-            userEmail: email,
-            id,
-            start,
-            end,
-            host: email,
-            link,
-          },
-        }).then( async () => {
-          if(invitedUsers?.length) {
-            await pinMeetingToUsers(invitedUsers, meeting, pinMeetingToUser )
-          }
-        }).then(() => {
-          handleClose();
-        });
+        if(invitedUsers?.length) {
+          await pinMeetingToUsers([...invitedUsers, email], meeting, pinMeetingToUser)
+        } else {
+          await pinMeetingToUsers([email], meeting, pinMeetingToUser )
+        }
+        handleClose();
       }
     }
     handleMutation();

@@ -42,8 +42,8 @@ const createUser = gql`
 `;
 
 const addMeetingToUser = gql`
-mutation addMeetingToUser($end: DateTime, $link: String, $start: DateTime, $id: ID! $host: String, $userEmail: String!) {
-  updateUser(input: {set: {meetings: {end: $end, host: $host, id: $id, link: $link, start: $start}}, filter: {email: {eq: $userEmail } }}) {
+mutation addMeetingToUser($end: DateTime, $link: String, $start: DateTime, $id: ID! $host: String, $emails: [String!]) {
+  updateUser(input: {set: {meetings: {end: $end, host: $host, id: $id, link: $link, start: $start}}, filter: {email: {in: $emails } }}) {
     user {
       email
       id
@@ -56,8 +56,7 @@ mutation addMeetingToUser($end: DateTime, $link: String, $start: DateTime, $id: 
       }
     }
   }
-}
-`;
+}`;
 
 const queryUsers = () => gql`
 query queryUsers {
@@ -94,8 +93,8 @@ subscription getMeetingUsers($id: [ID!]) {
 `
 
 const removeMeetingFromUser = gql `
-mutation removeMeetingFromUser($email: String, $meetingId: ID) {
-    updateUser(input: {filter: {email: {eq: $email}}, remove: {meetings: {id: $meetingId}}}) {
+mutation removeMeetingFromUser($emails: [String], $meetingId: ID) {
+    updateUser(input: {filter: {email: {in: $emails}}, remove: {meetings: {id: $meetingId}}}) {
         user {
             email
         }

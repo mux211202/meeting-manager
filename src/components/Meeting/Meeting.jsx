@@ -68,18 +68,17 @@ export function Meeting({id, start, end, link, host, handleClose}) {
         }).then(async () => {
             const deletedUsers = getDeletedUsers();
             const addedUsers = getAddedUsers();
-            if (deletedUsers) {
-                for(let i = 0; i < deletedUsers.length; i++) {
-                    await removeMeetingFromUser({
-                        variables: {
-                            email: deletedUsers[i],
-                            meetingId: id
-                        },
-                    });
-                }
+
+            if (deletedUsers.length) {
+                await removeMeetingFromUser({
+                    variables: {
+                        emails: deletedUsers,
+                        meetingId: id
+                    },
+                });
             }
 
-            if (addedUsers) {
+            if (addedUsers.length) {
                 await pinMeetingToUsers(addedUsers, updatedFormData, pinMeetingToUser)
             }
         }).finally(() => {
