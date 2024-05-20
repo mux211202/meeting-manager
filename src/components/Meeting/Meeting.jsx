@@ -1,6 +1,6 @@
 import { convertFromISOString } from "../../utils/date";
 import {useMutation, useSubscription} from "@apollo/client";
-import { getMeetingUsers, addMeetingToUser, updateMeeting as updateMeetingMutation, removeMeetingFromUser as removeMeetingFromUserMutation } from "../../utils/query";
+import { getMeetingUsers, addMeetingToUser, updateMeeting as updateMeetingMutation, removeMeetingFromUsers as removeMeetingFromUserMutation } from "../../utils/query";
 import Loader from "../Loader/Loader";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
@@ -17,7 +17,7 @@ export function Meeting({id, start, end, link, host, handleClose}) {
     const { data, loading } = useSubscription(getMeetingUsers, { variables: { id }});
     const [isEditMode, setIsEditMode] = useState(false);
     const [updateMeeting] = useMutation(updateMeetingMutation);
-    const [removeMeetingFromUser] = useMutation(removeMeetingFromUserMutation);
+    const [removeMeetingFromUsers] = useMutation(removeMeetingFromUserMutation);
     const [pinMeetingToUser] = useMutation(addMeetingToUser);
     const [defaultInvitedUsers, setDefaultInvitedUsers] = useState([]);
 
@@ -70,7 +70,7 @@ export function Meeting({id, start, end, link, host, handleClose}) {
             const addedUsers = getAddedUsers();
 
             if (deletedUsers.length) {
-                await removeMeetingFromUser({
+                await removeMeetingFromUsers({
                     variables: {
                         emails: deletedUsers,
                         meetingId: id

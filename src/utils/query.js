@@ -92,7 +92,7 @@ subscription getMeetingUsers($id: [ID!]) {
 }
 `
 
-const removeMeetingFromUser = gql `
+const removeMeetingFromUsers = gql `
 mutation removeMeetingFromUser($emails: [String], $meetingId: ID) {
     updateUser(input: {filter: {email: {in: $emails}}, remove: {meetings: {id: $meetingId}}}) {
         user {
@@ -104,4 +104,4 @@ mutation removeMeetingFromUser($emails: [String], $meetingId: ID) {
 
 
 
-export { addMeetingToUser, createUser, queryUsers, getUser, createMeeting, getMeetingUsers, updateMeeting, removeMeetingFromUser };
+export { addMeetingToUser, createUser, queryUsers, getUser, createMeeting, getMeetingUsers, updateMeeting, removeMeetingFromUsers };
